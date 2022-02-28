@@ -19,7 +19,7 @@ import model.Account;
 
 /**
  *
- * @author admin
+ * @author hoang
  */
 @WebServlet(name = "login", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
