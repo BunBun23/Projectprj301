@@ -17,11 +17,11 @@ import java.util.logging.Logger;
  *
  * @author a
  */
-public class DBContect {
+public class DBContext {
 
     public Connection conn = null;
 
-    public DBContect(String URL, String userName, String password) {
+    public DBContext(String URL, String userName, String password) {
         try {
             //URL: String Connection
             //Call Driver
@@ -32,12 +32,12 @@ public class DBContect {
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         } catch (SQLException ex) {
-            Logger.getLogger(DBContect.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public DBContect() {
-        this("jdbc:sqlserver://BUNBUN:1433;databaseName=Project", "sa", "sa");
+    public DBContext() {
+        this("jdbc:sqlserver://localhost:1433;databaseName=Fvax", "sa", "sa");
     }
 
     public ResultSet getData(String sql) {
@@ -47,12 +47,12 @@ public class DBContect {
             state = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             rs = state.executeQuery(sql);
         } catch (SQLException ex) {
-            Logger.getLogger(DBContect.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
         return rs;
     }
 
     public static void main(String[] args) {
-        new DBContect();
+        new DBContext();
     }
 }
