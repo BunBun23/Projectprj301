@@ -7,9 +7,10 @@ package model;
 
 /**
  *
- * @author bun
+ * @author a
  */
 public class Doctor {
+
     private int doctorID;
     private String information;
     private String phone;
@@ -34,7 +35,7 @@ public class Doctor {
         this.address = address;
         this.accountID = accountID;
     }
-    
+
     public Doctor(String information, String phone, int exp_Year, short gender, String email, String name, String address, int accountID) {
         this.information = information;
         this.phone = phone;
@@ -44,6 +45,16 @@ public class Doctor {
         this.name = name;
         this.address = address;
         this.accountID = accountID;
+    }
+
+    public Doctor(String information, String phone, int exp_Year, short gender, String email, String name, String address) {
+        this.information = information;
+        this.phone = phone;
+        this.exp_Year = exp_Year;
+        this.gender = gender;
+        this.email = email;
+        this.name = name;
+        this.address = address;
     }
 
     public int getDoctorID() {
@@ -122,5 +133,5 @@ public class Doctor {
     public String toString() {
         return "Doctor{" + "doctorID=" + doctorID + ", information=" + information + ", phone=" + phone + ", exp_Year=" + exp_Year + ", gender=" + gender + ", email=" + email + ", name=" + name + ", address=" + address + ", accountID=" + accountID + '}';
     }
-    
+
 }
