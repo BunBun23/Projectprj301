@@ -4,6 +4,7 @@
     Author     : a
 --%>
 
+<%@page import="dal.DaoVaccinePackage"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"  %> 
@@ -16,44 +17,25 @@
                     <h4 class="page-title">VACCINE PACKAGES</h4>
                 </div>
                 <div class="col-sm-8 col-9 text-right m-b-20">
-                    <a href="ControllerAddVaccinePackage" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Vaccine Package</a>
+                    <a href="ControllerAddVaccinePackage" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Package</a>
                 </div>
             </div>
-            <div class="row filter-row">
-                <div class="col-sm-6 col-md-3">
+<!--            <div class="row filter-row col-lg-8 offset-lg-2">
+                <div class="col-sm-9 ">
                     <div class="form-group form-focus">
-                        <label class="focus-label">Package ID</label>
-                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Search</label>
+                        <input type="search" id="searchBox" class="form-control floating">
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="form-group form-focus">
-                        <label class="focus-label">Package Name</label>
-                        <input type="text" class="form-control floating">
-                    </div>
+                <div class="col-sm-3 col-9 text-right m-b-20">
+                    <a href="ControllerAddVaccinePackage" style="border-radius: 30px"  class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Package</a>
                 </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="form-group form-focus select-focus">
-                        <label class="focus-label">Role</label>
-                        <select class="select floating">
-                            <option>Select Role</option>
-                            <option>Nurse</option>
-                            <option>Pharmacist</option>
-                            <option>Laboratorist</option>
-                            <option>Accountant</option>
-                            <option>Receptionist</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <a href="#" class="btn btn-success btn-block"> Search </a>
-                </div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col-md-11" style="margin: 0 auto;">
                     <div class="table-responsive">
                         <form method="post" action="ControllerListVaccinePackage">
-                            <table class="table table-striped custom-table">
+                            <table class="table table-striped custom-table" id="mytable">
                                 <thead>
                                     <tr>
                                         <!--<th style="min-width:200px;">Name</th>-->
@@ -61,14 +43,16 @@
                                         <th style="width:220px">Package Name</th>
                                         <th style="width:500px">Package Detail</th>
                                         <th style="min-width: 110px;text-align: center">Package Price</th>
-                                        <th style="text-align: center">Vaccines in<br> Package</th>
+                                        <th style="text-align: center">Vaccines in Package</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <%
                                         ResultSet rsVaccinePackage = (ResultSet) request.getAttribute("rsVaccinePackage");
+                                        
                                         while (rsVaccinePackage.next()) {
+                                            if (new DaoVaccinePackage().getStatusByPackageID(rsVaccinePackage.getInt(1))!=0) {
                                     %>
                                     <tr>
                                         <td style="text-align: center"><%= rsVaccinePackage.getString(1)%></td>
@@ -81,12 +65,12 @@
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="ControllerEditVaccinePackage?PackageID=<%=rsVaccinePackage.getString(1)%>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="ControllerDeleteVaccinePackage?PackageID=<%=rsVaccinePackage.getString(1)%>"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    <a class="dropdown-item" href="ControllerDeactiveVaccinePackage?PackageID=<%=rsVaccinePackage.getString(1)%>"><i class="fa fa-trash-o m-r-5"></i> Deactive</a>
                                                 </div>
                                             </div>
                                         </td>
                                     </tr>
-                                    <%}%>
+                                    <%}}%>
                                 </tbody>
                             </table>
                         </form>
@@ -107,6 +91,12 @@
         <script src="admin/assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="admin/assets/js/app.js"></script>
         <script src="admin/assets/js/activeTaskbar.js" type="text/javascript"></script>
-
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">    
+        <script>
+            $(document).ready(function () {
+                $('#mytable').DataTable();
+            });
+        </script>
     </body>
 </html>

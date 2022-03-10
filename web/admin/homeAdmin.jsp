@@ -25,7 +25,7 @@
                         <span class="dash-widget-bg2"><i class="fa fa-user-o"></i></span>
                         <div class="dash-widget-info text-right">
                             <h3>1072</h3>
-                            <span class="widget-title2">Patients <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span class="widget-title2">Customers <i class="fa fa-check" aria-hidden="true"></i></span>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="chart-title">
-                                <h4>Patient Total</h4>
+                                <h4>Customer Total</h4>
                                 <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span>
                             </div>	
                             <canvas id="linegraph"></canvas>
@@ -64,7 +64,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="chart-title">
-                                <h4>Patients In</h4>
+                                <h4>Vaccines In</h4>
                                 <div class="float-right">
                                     <ul class="chat-user-total">
                                         <li><i class="fa fa-circle current-users" aria-hidden="true"></i>ICU</li>
@@ -271,7 +271,7 @@
                 <div class="col-12 col-md-6 col-lg-8 col-xl-8">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title d-inline-block">New Patients </h4> <a href="patients.html" class="btn btn-primary float-right">View all</a>
+                            <h4 class="card-title d-inline-block">New Vaccines </h4> <a href="patients.html" class="btn btn-primary float-right">View all</a>
                         </div>
                         <div class="card-block">
                             <div class="table-responsive">
@@ -321,7 +321,7 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-4 col-xl-4">
                     <div class="hospital-barchart">
-                        <h4 class="card-title d-inline-block">Hospital Management</h4>
+                        <h4 class="card-title d-inline-block">Clinic Management</h4>
                     </div>
                     <div class="bar-chart">
                         <div class="legend">
@@ -344,7 +344,7 @@
                                 <div class="bar">
                                     <span class="percent">16%</span>
                                     <div class="item-progress" data-percent="16">
-                                        <span class="title">OPD Patient</span>
+                                        <span class="title">OPD Vaccine</span>
                                     </div>
                                 </div>
                             </div>
@@ -352,7 +352,7 @@
                                 <div class="bar">
                                     <span class="percent">71%</span>
                                     <div class="item-progress" data-percent="71">
-                                        <span class="title">New Patient</span>
+                                        <span class="title">New Vaccine</span>
                                     </div>
                                 </div>
                             </div>

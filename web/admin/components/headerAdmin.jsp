@@ -19,6 +19,8 @@
     <link rel="stylesheet" type="text/css" href="admin/assets/css/style.css">
     <link href="admin/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <script src="https://kit.fontawesome.com/cbca488d39.js" crossorigin="anonymous"></script>
+    <link href="admin/assets/css/paginate.css" rel="stylesheet" type="text/css"/>
+    <script src="admin/assets/js/paginate.js" type="text/javascript"></script>
 </head>
 
 <body>

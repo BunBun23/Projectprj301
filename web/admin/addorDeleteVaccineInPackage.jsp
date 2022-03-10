@@ -14,28 +14,32 @@
         <div class="content">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
-                    <h4 class="page-title">ADD NEW VACCINE TO PACKAGE</h4>
+                    <h4 class="page-title">ADD OR DELETE VACCINE IN PACKAGE</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">
-                    <form action="AddVaccineToPackageController" method="post">
+                    <form action="AddorDeleteVaccineInPackageController" method="post">
                         <%
                             ResultSet rsGetAllVaccineWithoutPackage = (ResultSet) request.getAttribute("rsGetAllVaccineWithoutPackage");
+                            ResultSet rsget1 = (ResultSet) request.getAttribute("rsget1");
+                            ResultSet rsget2 = (ResultSet) request.getAttribute("rsget2");
                             String PackageID = (String) request.getAttribute("PackageID");
                             String PackageName = (String) request.getAttribute("PackageName");
+                            String packageDetail = (String) request.getAttribute("packageDetail");
                         %>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label style="font-weight: bold">Package ID</label>
-                                    <input class="form-control" type="text" name="packageID" value="<%=PackageID%>" readonly="readonly" />
+                                    <input class="form-control" type="text" name="packageID" value="<%=PackageID%>" />
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label style="font-weight: bold">Package Name</label>
-                                    <input class="form-control" type="text" name="packageName" value="<%=PackageName%>" readonly="readonly" />
+                                    <input class="form-control" type="text" name="packageName" value="<%=PackageName%>" />
+                                    <input class="form-control" type="hidden" name="packageDetail" value="<%=packageDetail%>" />
                                 </div>
                             </div>
                         </div>
@@ -44,8 +48,14 @@
                                 <div class="form-group">
                                     <label style="font-weight: bold">Vaccine In Package</label> <label style="font-size: 15px;font-style: italic">(Select Vaccine)</label>
                                     <select class="select" multiple name="VaccineList">
-                                        <%while (rsGetAllVaccineWithoutPackage.next()) {%>
-                                        <option value="<%=rsGetAllVaccineWithoutPackage.getString(1)%>"><%=rsGetAllVaccineWithoutPackage.getString(2)%></option>
+                                        <%//while (rsGetAllVaccineWithoutPackage.next()) {%>
+                                        <!--<option value="<%//=rsGetAllVaccineWithoutPackage.getString(1)%>"><%//=rsGetAllVaccineWithoutPackage.getString(2)%></option>-->
+                                        <%//}%>
+                                        <%while (rsget2.next()) {%>
+                                        <option value="<%=rsget2.getString(1)%>" selected="selected"><%=rsget2.getString(2)%></option>
+                                        <%}%>
+                                        <%while (rsget1.next()) {%>
+                                        <option value="<%=rsget1.getString(1)%>"><%=rsget1.getString(2)%></option>
                                         <%}%>
                                     </select>
                                 </div>

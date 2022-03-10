@@ -41,7 +41,7 @@
                                         <th>Vaccine Detail</th>
                                         <th style="text-align: center">Vaccine Origin</th>
                                         <th style="text-align: center">Price</th>
-                                        <th style="text-align: center">Delete</th>
+                                        <!--<th style="text-align: center">Delete</th>-->
 
                                         <!--<th class="text-right">Action</th>-->
                                     </tr>
@@ -59,16 +59,13 @@
                                         <td><%= rsGetVaccineInPackage.getString(5)%></td>
                                         <td style="text-align: center"><%= rsGetVaccineInPackage.getString(4)%></td>
                                         <td style="text-align: center;font-weight: bold;font-style: italic;color: #1435C3"><fmt:formatNumber type="number" groupingUsed="true" value="<%= rsGetVaccineInPackage.getString(3)%>"  /> <span>VND</span></td>
-                                        <td><a href="DeleteVaccineInPackageController?PackageID=<%=PackageID%>&VaccineID=<%=rsGetVaccineInPackage.getString(1)%>">Delete</a></td>
+                                        
                                     </tr>
-                                    <%
-                                            num++;
-                                        }
-                                    %>
+                                    <%num++;}%>
                                 </tbody>
                             </table>
                             <div class="m-t-20 text-left">
-                                <a href="AddVaccineToPackageController?PackageID=<%=PackageID%>" class="btn btn-primary submit-btn"><i class="fa fa-plus"></i> Add New Vaccine to Package</a>
+                                <a href="AddorDeleteVaccineInPackageController?PackageID=<%=PackageID%>" class="btn btn-primary submit-btn"><i class="fa fa-plus"></i> Add Or Delete Vaccine in Package</a>
                                 <!--<button type="submit" name="submit" class="btn btn-primary submit-btn">Update</button>-->
                             </div>
                         </form>

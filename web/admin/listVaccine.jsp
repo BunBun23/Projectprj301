@@ -23,41 +23,22 @@
                     <a href="ControllerAddVaccine" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Vaccine</a>
                 </div>
             </div>
-            <div class="row filter-row">
-                <div class="col-sm-6 col-md-3">
+<!--            <div class="row filter-row col-lg-8 offset-lg-2">
+                <div class="col-sm-9 ">
                     <div class="form-group form-focus">
-                        <label class="focus-label">Vaccine ID</label>
-                        <input type="text" class="form-control floating">
+                        <label class="focus-label">Search</label>
+                        <input type="search" id="searchBox" class="form-control floating">
                     </div>
                 </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="form-group form-focus">
-                        <label class="focus-label">Vaccine Name</label>
-                        <input type="text" class="form-control floating">
-                    </div>
+                <div class="col-sm-3 col-9 text-right m-b-20">
+                    <a href="ControllerAddVaccine" style="border-radius: 30px" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Vaccine</a>
                 </div>
-                <div class="col-sm-6 col-md-3">
-                    <div class="form-group form-focus select-focus">
-                        <label class="focus-label">Role</label>
-                        <select class="select floating">
-                            <option>Select Role</option>
-                            <option>Nurse</option>
-                            <option>Pharmacist</option>
-                            <option>Laboratorist</option>
-                            <option>Accountant</option>
-                            <option>Receptionist</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-3">
-                    <a href="#" class="btn btn-success btn-block"> Search </a>
-                </div>
-            </div>
+            </div>-->
             <div class="row">
                 <div class="col-md-11" style="margin: 0 auto;">
                     <div class="table-responsive">
                         <form method="post" action="ControllerListVaccine">
-                            <table class="table table-striped custom-table">
+                            <table class="table table-striped custom-table " id="mytable">
                                 <thead>
                                     <tr>
                                         <!--<th style="min-width:200px;">Name</th>-->
@@ -87,7 +68,7 @@
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="ControllerEditVaccine?VaccineID=<%=rsVaccine.getString(1)%>"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                    <a class="dropdown-item" href="ControllerDeleteVaccine?VaccineID=<%=rsVaccine.getString(1)%>"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    <a class="dropdown-item" href="ControllerDeactiveVaccine?VaccineID=<%=rsVaccine.getString(1)%>"><i class="fa fa-trash-o m-r-5"></i>Deactive</a>
                                                 </div>
                                             </div>
                                         </td>
@@ -113,6 +94,13 @@
         <script src="admin/assets/js/bootstrap-datetimepicker.min.js"></script>
         <script src="admin/assets/js/app.js"></script>
         <script src="admin/assets/js/activeTaskbar.js" type="text/javascript"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">    
+        <script>
+            $(document).ready(function () {
+                $('#mytable').DataTable();
+            });
+        </script>
     </body>
 
 
