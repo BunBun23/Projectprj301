@@ -107,15 +107,18 @@ public class DaoCustomer extends DBContext {
         }
     }
 
-    public void Feedback(String type, String detail) {
+    public void Feedback(String type, String detail, int CusID, String CusName) {
         LocalDateTime curDate = java.time.LocalDateTime.now();
         String date = curDate.toString();
-        String sql = "insert into Feedback (CreateDate,Type,Detail,CustomerID,DoctorID) values (?,?,?,2,2)";
+        String sql = "insert into Feedback (CreateDate,Type,Detail,CustomerID,status,CustomerName) values (?,?,?,?,'waitting',?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setString(1, date);
             pre.setString(2, type);
             pre.setString(3, detail);
+            pre.setInt(4, CusID);
+            pre.setString(5, CusName);
+
             pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
@@ -134,5 +137,134 @@ public class DaoCustomer extends DBContext {
         }
         return null;
     }
+    
+    public ResultSet GetAllCustomer() {
+        try {
+            String query = "select * from Customer";
+            ps = conn.prepareStatement(query);
+            ResultSet rs1 = ps.executeQuery();
+            return rs1;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
+    public void changeStatus(int CustomerID){
+        String sql = "update Customer set status = 0 where CustomerID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, CustomerID);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public int getStatusByCustomerID(int CustomerID){
+        String sql = "select status from Customer where CustomerID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, CustomerID);
+            ResultSet rs1 = pre.executeQuery();
+            while (rs1.next()) {                
+                return rs1.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
+    
+
+    public int GetCusIdByUsername(String username) {
+        int cusID = 0;
+        try {
+            String query = "select CustomerID from Customer join Account on Account.AccountID = Customer.AccountID where Account.Username = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cusID = rs.getInt(1);
+            }
+            return cusID;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cusID;
+    }
+
+    public String GetCusNameByUsername(String username) {
+        String cusname = "";
+        try {
+            String query = "select CustomerName from Customer join Account on Account.AccountID = Customer.AccountID where Account.Username = ?";
+            ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                cusname = rs.getString(1);
+            }
+            return cusname;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return cusname;
+    }
+
+    public ResultSet GetAllFeedBackWatting() {
+        try {
+            String query = "select * from Feedback where status = 'waitting'";
+            ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    public ResultSet GetAllFeedBackChecked() {
+        try {
+            String query = "select top 6 * from Feedback where status = 'checked' order by FeedbackID DESC";
+            ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        DaoCustomer dao = new DaoCustomer();
+        String Name = dao.GetCusNameByUsername("HaiDuong");
+        System.out.println(Name);
+    }
+
+    public ResultSet GetFeedBackByID(int FeedBackId) {
+        try {
+            String query = "select * from Feedback where FeedbackID = ?";
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, FeedBackId);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void UpdateFeedback(int DocID,int FBID) {
+        String sql = " UPDATE [dbo].[Feedback]\n"
+                + "   SET [DoctorID] = ?\n"
+                + "      ,[status] = 'checked'\n"
+                + " WHERE FeedbackID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, DocID);
+            pre.setInt(2, FBID);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

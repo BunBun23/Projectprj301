@@ -194,4 +194,29 @@ public class DaoVaccine extends DBContext {
         int count = dao.totalvaccines();
             System.out.println(count);
     }
+    
+    public void changeStatus(int VaccineID){
+        String sql = "update Vaccine set status = 0 where vaccineId = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, VaccineID);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoVaccine.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public int getStatusByVaccineID(int VaccineID){
+        String sql = "select status from Vaccine where vaccineId = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, VaccineID);
+            ResultSet rs1 = pre.executeQuery();
+            while (rs1.next()) {                
+                return rs1.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
 }

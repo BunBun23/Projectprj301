@@ -53,21 +53,19 @@ public class DaoDoctor extends DBContext {
             pre.setString(8, Username);
             pre.executeUpdate();
         } catch (SQLException ex) {
-            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public ResultSet GetAccDocByUserName(String username) {
         try {
-            PreparedStatement ps = null;
-            ResultSet rs = null;
-            String query = "select * from Doctor join Account on Account.AccountID = Doctor.AccountID where Account.Username = ?";
-            ps = conn.prepareStatement(query);
+            String sql = "select * from Doctor join Account on Account.AccountID = Doctor.AccountID where Username = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, username);
-            rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
             return rs;
-        } catch (SQLException ex) {
-            Logger.getLogger(DaoCustomer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
@@ -101,6 +99,18 @@ public class DaoDoctor extends DBContext {
         }
     }
 
+    public ResultSet SearchDocByName(String DocName) {
+        try {
+            String sql = "  select * from Doctor where Name like N'%?%'";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, DocName);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (Exception ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     public ResultSet GetDoctorByID(int DoctorID) {
         try {
             String sql = "select * from Doctor where DoctorID = ?";
@@ -147,9 +157,59 @@ public class DaoDoctor extends DBContext {
         }
     }
 
+    public void changeStatus(int DoctorID){
+        String sql = "update Doctor set status = 0 where DoctorID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, DoctorID);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public String getStatusByDoctorID(int DoctorID){
+        String sql = "select status from Doctor where DoctorID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, DoctorID);
+            ResultSet rs1 = pre.executeQuery();
+            while (rs1.next()) {                
+                return rs1.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     public static void main(String[] args) {
         DaoDoctor dao = new DaoDoctor();
-        ResultSet rs = dao.GetAccDocByUserName("DrChinh");
-        System.out.println(rs);
+        int num = dao.GetDocIDByUserName("DrChinh");
+        System.out.println(num);
+    }
+
+    public int GetDocIDByUserName(String username) {
+        try {
+            String sql = "select * from Doctor join Account on Account.AccountID = Doctor.AccountID where Account.Username = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public void DeleteFeedBackByID(int FeedBackId) {
+        try {
+            String sql = "delete from Feedback where FeedBackID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, FeedBackId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -39,7 +39,7 @@ public class DaoAccount extends DBContext {
 
     public void registerAccDoctor(String username, String password) {
         try {
-            String query = "insert into Account values(?,?,'doctor')";
+            String query = "insert into Account(Username,Password,role) values(?,?,'doctor')";
             ps = conn.prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -187,9 +187,36 @@ public class DaoAccount extends DBContext {
         }
     }
     
+    public void changeStatus(int AccountID) {
+        String sql = "update Account set status = 0 where AccountID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, AccountID);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public int getStatusByUser(String username){
+        String sql = "select status from Account where Username = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setString(1, username);
+            ResultSet rs1 = pre.executeQuery();
+            while (rs1.next()) {                
+                return rs1.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
     public static void main(String[] args) {
         DaoAccount dao = new DaoAccount();
         ResultSet rs =dao.GetAccByUserName("HaiDuong");
         System.out.println(rs);
     }
+
+    
 }

@@ -113,7 +113,7 @@ public class DaoVaccinePackage extends DBContext {
     }
 
     public void addVaccinePackage(VaccinePackage vacPack) {
-        String sql = "insert into VaccinePackage values (?,?,?,?)";
+        String sql = "insert into VaccinePackage(PackageID,PackageName,Detail,PackagePrice) values (?,?,?,?)";
         try {
             PreparedStatement pre = conn.prepareStatement(sql);
             pre.setInt(1, vacPack.getPackageID());
@@ -175,6 +175,30 @@ public class DaoVaccinePackage extends DBContext {
         }
         return null;
     }
+    public ResultSet getAllVaccine() {
+        try {
+            String sql = "select vaccineId,vaccineName from Vaccine";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (Exception ex) {
+            Logger.getLogger(DaoVaccinePackage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    public ResultSet getVaccineInPackage(int PackageID) {
+        try {
+            String sql = "select PackageDetail.vaccineId,vaccineName from PackageDetail join Vaccine on PackageDetail.vaccineId = Vaccine.vaccineId where PackageID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, PackageID);
+            ResultSet rs = ps.executeQuery();
+            return rs;
+        } catch (Exception ex) {
+            Logger.getLogger(DaoVaccinePackage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     public ResultSet GetPackageById(int PackageID) {
         try {
@@ -187,6 +211,47 @@ public class DaoVaccinePackage extends DBContext {
             Logger.getLogger(DaoVaccinePackage.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public String GetPackageDetailByID(int PackageID) {
+        try {
+            String sql = "select Detail from VaccinePackage where PackageID = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, PackageID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DaoVaccinePackage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void changeStatus(int packageID){
+        String sql = "update VaccinePackage set status = 0 where PackageID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, packageID);
+            pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoVaccinePackage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public int getStatusByPackageID(int packageID){
+        String sql = "select status from VaccinePackage where PackageID = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, packageID);
+            ResultSet rs1 = pre.executeQuery();
+            while (rs1.next()) {                
+                return rs1.getInt(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoDoctor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
     }
 
 }
