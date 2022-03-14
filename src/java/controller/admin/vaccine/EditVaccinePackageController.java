@@ -3,20 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.admin.vaccine;
 
+import dal.DaoVaccinePackage;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author hoang
+ * @author a
  */
-public class HomeController extends HttpServlet {
+@WebServlet(name = "ControllerEditVaccinePackage", urlPatterns = {"/ControllerEditVaccinePackage"})
+public class EditVaccinePackageController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,12 +31,25 @@ public class HomeController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-      protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getRequestDispatcher("html/home.jsp").forward(request, response);
-            
+            /* TODO output your page here. You may use following sample code. */
+            DaoVaccinePackage daoVaxPack = new DaoVaccinePackage();
+            String submit = request.getParameter("submit");
+            if (submit == null) {
+                String PackageID = request.getParameter("PackageID");
+                ResultSet rsGetPackageById = daoVaxPack.GetPackageById(Integer.parseInt(PackageID));
+                request.setAttribute("rsGetPackageById", rsGetPackageById);
+                request.getRequestDispatcher("admin/editVaccinePackage.jsp").forward(request, response);
+            } else {
+                String packageID = request.getParameter("packageID");
+                String packageName = request.getParameter("packageName");
+                String packageDetail = request.getParameter("packageDetail");
+                daoVaxPack.updateVaccinePackage(packageName, packageDetail, Integer.parseInt(packageID));
+                request.getRequestDispatcher("ControllerListVaccinePackage").forward(request, response);
+            }
         }
     }
 

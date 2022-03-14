@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.all;
 
 import dal.DaoAccount;
+import dal.DaoDoctor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,10 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Account;
+import util.Hashing;
 
 /**
  *
- * @author hoang
+ * @author admin
  */
 @WebServlet(name = "login", urlPatterns = {"/login"})
 public class LoginController extends HttpServlet {
@@ -37,20 +39,9 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            DaoAccount dao = new DaoAccount();
-            Account a = dao.loginCus(username, password);
-            if(a == null){
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-            }else{
-                HttpSession session = request.getSession();
-                session.setAttribute("acc", a);
-                response.sendRedirect("index.jsp");
-            }
+
         }
     }
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,7 +57,7 @@ public class LoginController extends HttpServlet {
             }
         }
         //b2 : set user, pass vao login form
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("common/login.jsp").forward(request, response);
     }
 
     /**
@@ -83,30 +74,44 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         DaoAccount dao = new DaoAccount();
-        Account admin = dao.loginAdmin(username, password);
-        Account cus = dao.loginCus(username, password);
-        Account doctor = dao.loginDoctor(username, password);
-        if (admin == null && cus == null && doctor == null) {
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-        } else if (admin != null && cus == null && doctor == null) {
+        Account acc = dao.login(username, Hashing.Encrypt(password));
+        if (acc == null) {
+            request.setAttribute("message", "Wrong username or password");
+            request.getRequestDispatcher("common/login.jsp").forward(request, response);
+        }
+        else if (acc.getRole().equals("doctor") && dao.getStatusByUser(username)==0) {
+            request.setAttribute("message", "This Account is Deactive!");
+            request.getRequestDispatcher("common/login.jsp").forward(request, response);
+        } 
+        else if (acc.getRole().equals("customer") && dao.getStatusByUser(username)==0) {
+            request.setAttribute("message", "This Account is Deactive!");
+            request.getRequestDispatcher("common/login.jsp").forward(request, response);
+        } 
+        else if (acc.getRole().equals("admin")) {
             HttpSession session = request.getSession();
-            session.setAttribute("accAdmin", admin);
-            request.getRequestDispatcher("html/admin.jsp").forward(request, response);
-        } else if (admin == null && cus != null && doctor == null) {
+            session.setAttribute("acc", acc);
+            request.getRequestDispatcher("ControllerHomeAdmin").forward(request, response);
+        } 
+        else if (acc.getRole().equals("customer")) {
             HttpSession session = request.getSession();
             Cookie u = new Cookie("userC", username);
             Cookie p = new Cookie("passC", password);
-            u.setMaxAge(60*60);
-            p.setMaxAge(60*60);
+            u.setMaxAge(60 * 60);
+            p.setMaxAge(60 * 60);
             // luu len trinh duyet
             response.addCookie(u);
             response.addCookie(p);
-            session.setAttribute("accCus", cus);
-            request.getRequestDispatcher("html/home.jsp").forward(request, response);
+            session.setAttribute("username", username);
+            session.setAttribute("password", password);
+            session.setAttribute("acc", acc);
+            request.getRequestDispatcher("home").forward(request, response);
         } else {
             HttpSession session = request.getSession();
-            session.setAttribute("accDoc", doctor);
-            request.getRequestDispatcher("html/doctor.jsp").forward(request, response);
+            session.setAttribute("username", username);
+            session.setAttribute("password", password);
+            session.setAttribute("acc", acc);
+            session.setAttribute("username", username);
+            request.getRequestDispatcher("homedoctor").forward(request, response);
         }
     }
 

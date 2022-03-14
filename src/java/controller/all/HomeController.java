@@ -3,23 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controller;
+package controller.all;
 
+import dal.DaoCustomer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author hoang
+ * @author haipr
  */
-@WebServlet(name = "Logout", urlPatterns = {"/logout"})
-public class Logout extends HttpServlet {
+public class HomeController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,13 +29,14 @@ public class Logout extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+      protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HttpSession session = request.getSession();
-            session.removeAttribute("accCus");
-            request.getRequestDispatcher("html/home.jsp").forward(request, response);
+            DaoCustomer dao = new DaoCustomer();
+            ResultSet rsfeedback = dao.GetAllFeedBackChecked();
+            request.setAttribute("rsfeedback", rsfeedback);
+            request.getRequestDispatcher("common/home.jsp").forward(request, response);
         }
     }
 
