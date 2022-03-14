@@ -47,15 +47,7 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // b1: get user, pass tu cookie
-        Cookie[] arr = request.getCookies();
-        for (Cookie cookie : arr) {
-            if (cookie.getName().equals("userC")) {
-                request.setAttribute("name", cookie.getValue());
-            }
-            if (cookie.getName().equals("passC")) {
-                request.setAttribute("pass", cookie.getValue());
-            }
-        }
+        
         //b2 : set user, pass vao login form
         request.getRequestDispatcher("common/login.jsp").forward(request, response);
     }

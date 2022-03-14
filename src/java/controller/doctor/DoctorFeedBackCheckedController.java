@@ -51,10 +51,7 @@ public class DoctorFeedBackCheckedController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        DaoCustomer dao = new DaoCustomer();
-        ResultSet rsListFeedBack = dao.GetAllFeedBackChecked();
-        request.setAttribute("rsListFeedBack", rsListFeedBack);
-        request.getRequestDispatcher("doctor/feedbackcheckeddoctor.jsp").forward(request, response);
+        
 
     }
 

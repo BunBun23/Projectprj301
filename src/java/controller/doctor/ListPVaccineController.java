@@ -36,10 +36,7 @@ public class ListPVaccineController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            DaoVaccinePackage daoVax = new DaoVaccinePackage();
-            ResultSet rsVaccinePackage = daoVax.GetAllVaccinePackage();
-            request.setAttribute("rsVaccinePackage", rsVaccinePackage);
-            request.getRequestDispatcher("doctor/listvaccinepackagedoctor.jsp").forward(request, response);
+            
         }
     }
 
