@@ -61,7 +61,19 @@ public class FeedbackController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        DaoCustomer dao = new DaoCustomer();
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        String type = request.getParameter("type");
+        String detail = request.getParameter("detail");
         
+        String username = (String) session.getAttribute("username");
+        int cusID = dao.GetCusIdByUsername(username) ;
+        String CusName =dao.GetCusNameByUsername(username);
+        dao.Feedback(type, detail, cusID, CusName);
+        response.sendRedirect("home");
     }
 
     /**

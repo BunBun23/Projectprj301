@@ -36,7 +36,14 @@ public class DeactiveDoctorController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+            DaoDoctor daoDoc = new DaoDoctor();
+            DaoAccount daoAcc = new DaoAccount();
+            String DoctorID = request.getParameter("DoctorID");
+            String AccountID = request.getParameter("AccountID");
+            daoDoc.changeStatus(Integer.parseInt(DoctorID));
+            daoAcc.changeStatus(Integer.parseInt(AccountID));
+            request.getRequestDispatcher("ControllerListDoctor").forward(request, response);
+
         }
     }
 

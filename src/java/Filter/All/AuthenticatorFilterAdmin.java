@@ -35,6 +35,7 @@ public class AuthenticatorFilterAdmin implements Filter {
     private FilterConfig filterConfig = null;
 
     public AuthenticatorFilterAdmin() {
+        
     }
 
     /**
@@ -55,7 +56,15 @@ public class AuthenticatorFilterAdmin implements Filter {
 
         HttpSession session = req.getSession();
         Account account = (Account) session.getAttribute("acc");
-        
+        if (account != null) {
+            if (account.getRole().equals("admin")) {
+                chain.doFilter(request, response);
+            } else {
+                resp.sendRedirect("login");
+            }
+        } else {
+            resp.sendRedirect("login");
+        }
     }
 
     /**
@@ -70,6 +79,6 @@ public class AuthenticatorFilterAdmin implements Filter {
      */
     @Override
     public void init(FilterConfig filterConfig) {
-
+        
     }
 }
